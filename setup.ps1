@@ -37,6 +37,7 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     echo "Installing git..."
     winget install Git.Git
     winget install GnuPG.Gpg4win
+    winget install GitHub.cli
     # Configure Git
     git config --global user.email "${email}"
     git config --global user.name "${username}"
@@ -51,18 +52,20 @@ if (Get-Command ssh -ErrorAction SilentlyContinue) {
 } else { 
     winget install PuTTY.PuTTY
     gsudo Set-Service ssh-agent -StartupType Automatic
-}
     # Generate a new SSH key
     ssh-keygen -t rsa -b 4096 -C "${email}"
 
     # Start ssh-agent and add the key to it
     ssh-add ~/.ssh/id_rsa
-    echo "---- COPY BELOW ----"
+}
+    echo "---- COPY TO GH BELOW ----"
     # Display the public key ready to be copy pasted to GitHub
     cat ~/.ssh/id_rsa.pub 
-    echo "---- COPY ABOVE ----"
-    mkdir -p ~\dev\dotfiles
+    echo "---- COPY TO GH ABOVE ----"
+    mkdir -p $env:USERPROFILE\dev\dotfiles
     git clone git@github.com:amazinghorse/dotfiles.git $env:USERPROFILE/dev/dotfiles
-    winget install GitHub.cli
+    winget install JanDeDobbeleer.OhMyPosh
+    Install-Module -Name Terminal-Icons -Repository PSGallery
+    winget install vscode
     
 echo "Finished Components install."
