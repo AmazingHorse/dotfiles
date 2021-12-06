@@ -36,12 +36,13 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 } else { 
     echo "Installing git..."
     winget install Git.Git
-
+    winget install GnuPG.Gpg4win
     # Configure Git
     git config --global user.email "${email}"
     git config --global user.name "${username}"
     git config --global user.signingkey "${gpgkeyid}"
     git config --global commit.gpgsign true
+    git config gpg.program (get-command gpg).path
     #git config --global core.pager /usr/bin/less
     git config --global core.excludesfile ~/.gitignore
 }
